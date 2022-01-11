@@ -1,6 +1,6 @@
 import React from "react";
 import { useCharacters } from "../hooks/useCharacters";
-
+import { Link } from 'react-router-dom'
 import './CharacterList.css'
 
 
