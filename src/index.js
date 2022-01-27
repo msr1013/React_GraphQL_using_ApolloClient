@@ -1,23 +1,37 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import App from "./App";
-import { ApolloClient, ApolloProvider, InMemoryCache } from "@apollo/client";
-import {BrowserRouter} from 'react-router-dom'
+import { ApolloClient, ApolloProvider, InMemoryCache, HttpLink ,gql} from "@apollo/client";
+
 
 const client = new ApolloClient({
-  uri: "https://rickandmortyapi.com/graphql",
-  cache: new InMemoryCache()
+  cache: new InMemoryCache(),
+  link:new HttpLink({
+    uri: "http://localhost:4000",
+  })
 });
 
-// https://rickandmortyapi.com/graphql
+const query = gql`
+query{
+  allPersons{
+    name,
+    phone,
+    address {
+      street,
+      city
+    }
+    id
+  }
+}
+`
+client.query({query})
+.then((response) => {
+  console.log(response.data)
+})
 
 ReactDOM.render(
-  <React.StrictMode>
-    <BrowserRouter>
-    <ApolloProvider client={client}>
-      <App />
-    </ApolloProvider>
-    </BrowserRouter>
-  </React.StrictMode>,
+  <ApolloProvider client={client}>
+    <App />
+  </ApolloProvider>,
   document.getElementById("root")
 );

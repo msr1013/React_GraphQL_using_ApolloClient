@@ -1,20 +1,27 @@
-import "./App.css";
-import CharactersList from "./pages/CharactersList";
-import Search from "./pages/Search";
-import Character from "./pages/Character";
-import {Route,Routes} from 'react-router'
+import React from 'react'
+import {gql,useQuery} from '@apollo/client'
+import Persons from '../src/Persons'
 
+const ALL_PERSONS= gql`
+query {
+  allPersons {
+    name
+    phone
+    id
+  }
+}
+`
 
-function App() {
+const App = () => {
+  const result = useQuery(ALL_PERSONS)
+
+  if(result.loading){
+    return <div>loading...</div>
+  }
+
   return (
-    <div className="App">
-      <Routes>
-        <Route strict exact path="/" element={<CharactersList/>}/>
-        <Route strict exact path="/search" element={<Search/>}/>
-        <Route strict exact path="/:id" element={<Character/>}/>
-      </Routes>
-    </div>
-  );
+   <Persons persons = {result.data.allPersons}/>
+  )
 }
 
-export default App;
+export default App
