@@ -18,8 +18,8 @@ query findPersonByName($nameToSearch:String!) {
 
 
 const Persons = ({persons}) => {
-  const [getPerson,result] = useLazyQuery(FIND_PERSON)
   const [person,setPerson] = useState(null)
+  const [getPerson,result] = useLazyQuery(FIND_PERSON)
 
   const showPerson = (name) => {
     getPerson({variables:{nameToSearch:name}})
@@ -30,7 +30,7 @@ const Persons = ({persons}) => {
       console.log('%^&%&%&^%^&(_)(_)^&**E#$%#$%%$#%$',result.data)
       setPerson(result.data.findPerson)
     }
-  },[result])
+  },[result.data])
 
   if(person) {
     return (
@@ -42,6 +42,7 @@ const Persons = ({persons}) => {
       </div>
     )
   }
+
   return (
     <div>
       <h2>Persons</h2>
